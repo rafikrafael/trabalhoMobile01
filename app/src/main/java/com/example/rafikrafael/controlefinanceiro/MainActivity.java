@@ -1,7 +1,9 @@
 package com.example.rafikrafael.controlefinanceiro;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -27,7 +29,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        controllerLancamento = new ControllerLancamento();
+        SharedPreferences sp = this.getPreferences(Context.MODE_PRIVATE);
+
+        controllerLancamento = new ControllerLancamento(sp);
         editResultado = (EditText) findViewById(R.id.editResultado);
         editResultado.setEnabled(false);
 
@@ -51,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == Activity.RESULT_OK) {
                 Lancamento lancamento = (Lancamento) data.getExtras().getSerializable("lancamento");
                 controllerLancamento.add(lancamento);
+                controllerLancamento.saveListInPreferences();
                 getSaldoEmTela();
             }
         }
